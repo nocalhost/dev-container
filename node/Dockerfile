@@ -7,11 +7,11 @@ ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 RUN apt-get update \
-    && apt install -y ca-certificates curl \
+    && apt install --force-yes -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
            git openssh-client zsh bash net-tools \
-    && apt-get install -y sudo wget \
+    && apt-get install --force-yes -y sudo wget \
     #
     # Clean up
     && apt-get autoremove -y \
@@ -36,8 +36,6 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
 RUN /bin/zsh
 
 COPY ./zsh/.p10k.zsh /root
-
-RUN npm install -g webpack wepack-cli
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]

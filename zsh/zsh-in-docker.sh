@@ -75,9 +75,9 @@ install_dependencies() {
         ;;
         *)
             $Sudo apt-get update
-            $Sudo apt-get -y install git curl zsh locales
+            $Sudo apt-get -y --force-yes install git curl zsh locales
             if [ "$VERSION" != "14.04" ]; then
-                $Sudo apt-get -y install locales-all
+                $Sudo apt-get -y  --force-yes install locales-all
             fi
             $Sudo locale-gen en_US.UTF-8
     esac
@@ -129,7 +129,7 @@ cd /tmp
 
 # Install On-My-Zsh
 if [ ! -d $HOME/.oh-my-zsh ]; then
-    sh -c "$(curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" --unattended
+   yes | sh -c "$(curl https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" --unattended
 fi
 
 # Generate plugin list
