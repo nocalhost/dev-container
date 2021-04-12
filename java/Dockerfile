@@ -1,29 +1,25 @@
+ARG JAVA_VERSION=11
 ARG JAVA_VERSION=8
 
-FROM codingcorp-docker.pkg.coding.net/nocalhost/public/coding-java:latest
+FROM openjdk:${JAVA_VERSION}-jdk-buster
 
+RUN apt update
+RUN apt install -y ca-certificates curl \
+    build-essential gcc g++ \
+    tzdata zip unzip vim wget \
+    git openssh-client zsh bash net-tools
 ARG USERNAME=nocalhost
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
 
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && rm /etc/apt/sources.list.d/jessie-backports.list \
-    && rm /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic-security main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic-updates main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic-backports main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic-security main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic-updates main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic-backports main universe restricted multiverse" >> /etc/apt/sources.list \
     && apt-get update \
-    && apt install --force-yes -y ca-certificates curl \
+    && apt install -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
            git openssh-client zsh bash net-tools \
-    && apt-get install --force-yes -y sudo wget \
+    && apt-get install -y sudo wget \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #
@@ -46,6 +42,8 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
     -p 'history-substring-search' \
     -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
+
+RUN /bin/zsh
 
 COPY ./zsh/.p10k.zsh /root
 
