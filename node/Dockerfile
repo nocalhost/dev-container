@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt install --force-yes -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
-           git openssh-client zsh bash net-tools \
+           git openssh-client zsh bash net-tools tmux \
     && apt-get install --force-yes -y sudo wget \
     #
     # Clean up
@@ -36,6 +36,8 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
 RUN /bin/zsh
 
 COPY ./zsh/.p10k.zsh /root
+
+RUN chsh -s /usr/bin/zsh
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]
