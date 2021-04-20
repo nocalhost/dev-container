@@ -43,7 +43,7 @@ COPY ./zsh/.p10k.zsh /root
 
 COPY ./zsh/.tmux.conf /root
 
-RUN tmux source .tmux.conf
+RUN tmux source /root/.tmux.conf
 
 RUN chsh -s /usr/bin/zsh
 
