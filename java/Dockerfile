@@ -47,6 +47,10 @@ RUN /bin/zsh
 
 COPY ./zsh/.p10k.zsh /root
 
+COPY ./zsh/.tmux.conf /root
+
+RUN tmux source .tmux.conf
+
 RUN chsh -s /usr/bin/zsh
 
 ENTRYPOINT [ "/bin/zsh" ]
