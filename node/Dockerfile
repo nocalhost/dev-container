@@ -10,7 +10,7 @@ RUN apt-get update \
     && apt install --force-yes -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
-           git openssh-client zsh bash net-tools \
+           git openssh-client zsh bash net-tools tmux \
     && apt-get install --force-yes -y sudo wget \
     #
     # Clean up
@@ -40,6 +40,10 @@ RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN /bin/zsh
 
 COPY ./zsh/.p10k.zsh /root
+
+COPY ./zsh/.tmux.conf /root
+
+RUN chsh -s /usr/bin/zsh
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]

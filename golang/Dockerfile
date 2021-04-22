@@ -12,7 +12,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && apt install --force-yes -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
-           git openssh-client zsh bash net-tools \
+           git openssh-client zsh bash net-tools tmux \
     && apt-get install --force-yes -y sudo wget \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
@@ -44,6 +44,10 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
 RUN go get github.com/go-delve/delve/cmd/dlv
 
 COPY ./zsh/.p10k.zsh /root
+
+COPY ./zsh/.tmux.conf /root
+
+RUN chsh -s /usr/bin/zsh
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]
