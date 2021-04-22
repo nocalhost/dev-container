@@ -22,6 +22,10 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+# Modify Timezone
+ENV TZ Asia/Shanghai
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -- \
 COPY ./zsh/zsh-in-docker.sh /tmp
 RUN chmod +x /tmp/zsh-in-docker.sh && \

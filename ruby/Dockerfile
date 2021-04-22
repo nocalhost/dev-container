@@ -36,6 +36,10 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
     -p 'history-substring-search' \
     -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
+    
+# Modify Timezone
+ENV TZ Asia/Shanghai
+RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY ./zsh/.p10k.zsh /root
 
