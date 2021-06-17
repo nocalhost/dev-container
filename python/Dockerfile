@@ -13,8 +13,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && apt install --force-yes -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
-           git openssh-client zsh bash net-tools tmux \
-    && apt-get install --force-yes -y sudo wget \
+           git openssh-client zsh bash net-tools tmux sudo wget \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #

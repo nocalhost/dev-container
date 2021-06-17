@@ -10,8 +10,7 @@ RUN apt-get update \
     && apt install --force-yes -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
-           git openssh-client zsh bash net-tools tmux \
-    && apt-get install --force-yes -y sudo wget \
+           git openssh-client zsh bash net-tools tmux sudo wget \
     #
     # Clean up
     && apt-get autoremove -y \

@@ -18,8 +18,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && apt install -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
-           git openssh-client zsh bash net-tools tmux \
-    && apt-get install -y sudo wget \
+           git openssh-client zsh bash net-tools tmux sudo wget \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #
@@ -27,6 +26,12 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
+    # install maven
+    && curl -LO https://apache.website-solution.net/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz \
+    && tar -zxvf apache-maven-3.8.1-bin.tar.gz -C /usr/local/lib/ \
+    && rm apache-maven-3.8.1-bin.tar.gz
+
+ENV PATH="/usr/local/lib/apache-maven-3.8.1/bin:${PATH}"
     
 # update timezone
 ENV TZ Asia/Shanghai
