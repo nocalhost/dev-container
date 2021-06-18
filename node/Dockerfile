@@ -36,8 +36,6 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
 ENV TZ Asia/Shanghai
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN /bin/zsh
-
 COPY ./zsh/.p10k.zsh /root
 
 COPY ./zsh/.tmux.conf /root
