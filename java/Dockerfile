@@ -3,11 +3,6 @@ ARG JAVA_VERSION=8
 
 FROM openjdk:${JAVA_VERSION}-jdk-buster
 
-RUN apt update
-RUN apt install -y ca-certificates curl \
-    build-essential gcc g++ \
-    tzdata zip unzip vim wget \
-    git openssh-client zsh bash net-tools
 ARG USERNAME=nocalhost
 ARG USER_UID=1000
 ARG USER_GID=$USER_UID
@@ -25,7 +20,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
     # install maven
     && curl -LO https://apache.website-solution.net/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz \
     && tar -zxvf apache-maven-3.8.1-bin.tar.gz -C /usr/local/lib/ \
@@ -51,8 +46,6 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
     -p 'history-substring-search' \
     -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
-
-RUN /bin/zsh
 
 COPY ./zsh/.p10k.zsh /root
 
