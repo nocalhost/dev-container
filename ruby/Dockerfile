@@ -40,11 +40,16 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
 ENV TZ Asia/Shanghai
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY ./zsh/.p10k.zsh /root
-
-COPY ./zsh/.tmux.conf /root
-
+# Mark zsh as default shell
 RUN chsh -s /usr/bin/zsh
+USER $USERNAME
+
+# Copy local config to p10k zsh
+COPY ./zsh/.p10k.zsh /home/nocalhost/
+COPY ./zsh/.tmux.conf /home/nocalhost/
+
+RUN sudo chown nocalhost /home/nocalhost/.p10k.zsh && \
+    sudo chown nocalhost /home/nocalhost/.tmux.conf
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]

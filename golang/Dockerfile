@@ -25,6 +25,10 @@ RUN groupadd --gid $USER_GID $USERNAME \
 ENV TZ Asia/Shanghai
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Mark zsh as default shell
+RUN chsh -s /usr/bin/zsh
+USER $USERNAME
+
 # RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -- \
 COPY ./zsh/zsh-in-docker.sh /tmp
 RUN chmod +x /tmp/zsh-in-docker.sh && \
@@ -42,11 +46,12 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
 
 RUN go get github.com/go-delve/delve/cmd/dlv
 
-COPY ./zsh/.p10k.zsh /root
+# Copy local config to p10k zsh
+COPY ./zsh/.p10k.zsh /home/nocalhost/
+COPY ./zsh/.tmux.conf /home/nocalhost/
 
-COPY ./zsh/.tmux.conf /root
-
-RUN chsh -s /usr/bin/zsh
+RUN sudo chown nocalhost /home/nocalhost/.p10k.zsh && \
+    sudo chown nocalhost /home/nocalhost/.tmux.conf
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]

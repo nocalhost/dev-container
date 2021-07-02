@@ -36,14 +36,18 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && rm apache-maven-3.8.1-bin.tar.gz
 
 ENV PATH="/usr/local/lib/apache-maven-3.8.1/bin:${PATH}"
-    
+
 # update timezone
 ENV TZ Asia/Shanghai
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+# Mark zsh as default shell
+RUN chsh -s /usr/bin/zsh
+USER $USERNAME
+
 # RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/v1.1.1/zsh-in-docker.sh)" -- \
 COPY ./zsh/zsh-in-docker.sh /tmp
-RUN chmod +x /tmp/zsh-in-docker.sh && \
+RUN sudo chmod +x /tmp/zsh-in-docker.sh && \
     /tmp/zsh-in-docker.sh \
     -a 'SPACESHIP_PROMPT_ADD_NEWLINE="false"' \
     -a 'SPACESHIP_PROMPT_SEPARATE_LINE="false"' \
@@ -56,11 +60,16 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
     -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
 
-COPY ./zsh/.p10k.zsh /root
+# Copy local config to p10k zsh
+COPY ./zsh/.p10k.zsh /home/nocalhost/
+COPY ./zsh/.tmux.conf /home/nocalhost/
 
-COPY ./zsh/.tmux.conf /root
+RUN mkdir /home/nocalhost/.m2
+COPY ./mvn/settings.xml /home/nocalhost/.m2/
 
-RUN chsh -s /usr/bin/zsh
+RUN sudo chown nocalhost /home/nocalhost/.m2/settings.xml && \
+    sudo chown nocalhost /home/nocalhost/.p10k.zsh && \
+    sudo chown nocalhost /home/nocalhost/.tmux.conf
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]
