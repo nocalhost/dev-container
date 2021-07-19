@@ -2,9 +2,10 @@ ARG NODE_VERSION=14
 
 FROM node:${NODE_VERSION}-buster
 
-ARG USERNAME=nocalhost
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ARG ROOTHOME=/Users/root
+
+RUN mkdir -p $ROOTHOME
+ENV HOME=$ROOTHOME
 
 RUN apt-get update \
     && apt install --force-yes -y ca-certificates curl \
@@ -38,14 +39,10 @@ RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Mark zsh as default shell
 RUN chsh -s /usr/bin/zsh
-USER $USERNAME
 
 # Copy local config to p10k zsh
-COPY ./zsh/.p10k.zsh /home/nocalhost/
-COPY ./zsh/.tmux.conf /home/nocalhost/
-
-RUN sudo chown nocalhost /home/nocalhost/.p10k.zsh && \
-    sudo chown nocalhost /home/nocalhost/.tmux.conf
+COPY ./zsh/.p10k.zsh $ROOTHOME/
+COPY ./zsh/.tmux.conf $ROOTHOME/
 
 ENTRYPOINT [ "/bin/zsh" ]
 CMD ["-l"]
