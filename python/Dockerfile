@@ -34,6 +34,9 @@ RUN chmod +x /tmp/zsh-in-docker.sh && \
     -a 'bindkey "\$terminfo[kcuu1]" history-substring-search-up' \
     -a 'bindkey "\$terminfo[kcud1]" history-substring-search-down'
 
+# PyCharm Remote Debugging
+RUN pip install pydevd-pycharm~=212.4746.96
+
 # Modify Timezone
 ENV TZ Asia/Shanghai
 RUN cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
