@@ -1,24 +1,14 @@
-ARG JAVA_VERSION=8
+ARG JAVA_VERSION=11
 
-FROM codingcorp-docker.pkg.coding.net/nocalhost/public/coding-java:latest
+FROM openjdk:${JAVA_VERSION}-jdk-buster
 
 ARG ROOTHOME=/Users/root
 
 RUN mkdir -p $ROOTHOME
 ENV HOME=$ROOTHOME
 
-RUN rm /etc/apt/sources.list.d/jessie-backports.list \
-    && rm /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic-security main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic-updates main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb http://mirrors.cloud.tencent.com/ubuntu/ bionic-backports main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic-security main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic-updates main universe restricted multiverse" >> /etc/apt/sources.list \
-    && echo "deb-src http://mirrors.cloud.tencent.com/ubuntu/ bionic-backports main universe restricted multiverse" >> /etc/apt/sources.list \
-    && apt-get update \
-    && apt install --force-yes -y ca-certificates curl \
+RUN apt-get update --allow-unauthenticated \
+    && apt install --allow-unauthenticated --force-yes -y ca-certificates curl \
            build-essential gcc g++ \
            tzdata zip unzip vim wget \
            git openssh-client zsh bash net-tools tmux sudo wget \
