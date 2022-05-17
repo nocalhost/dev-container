@@ -18,9 +18,9 @@ RUN apt-get update --allow-unauthenticated \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     # install maven
-    && curl -LO https://apache.website-solution.net/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz \
-    && tar -zxvf apache-maven-3.8.1-bin.tar.gz -C /usr/local/lib/ \
-    && rm apache-maven-3.8.1-bin.tar.gz
+    && curl -LO https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz \
+    && tar -zxvf apache-maven-3.8.5-bin.tar.gz -C /usr/local/lib/ \
+    && rm apache-maven-3.8.5-bin.tar.gz
 
 ENV PATH="/usr/local/lib/apache-maven-3.8.1/bin:${PATH}"
 
